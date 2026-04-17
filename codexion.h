@@ -64,37 +64,42 @@ typedef struct s_coder
 }   t_coder;
 
 
-// Helper Functoins
+//      parsing
 int     parse_args(int ac, char **av, t_data *data);
 
-// INIT
+//      init
 int      init_simulation(t_data *data, t_coder **coders, t_dongle **dongles);
 long     get_time();
 
-// Routine
+//      Routine
 void    *coder_routine(void *arg);
 
-//  threads
+//      threads
 int     create_threads(t_coder *coders, t_data *data);
 int     join_threads(t_coder *coders, t_data *data);
 
-//  monitor
+//      monitor
 void    *monitor_routine(void *arg);
 int     check_sim_stop(t_data *data, t_coder *coders);
 
-
-//  helper!
+//      helper!
 void    safe_print(t_data *data, int id, char *msg);
 void    safe_stop(t_data *data, int value);
 int     check_stop(t_data *data);
 
-//routine
+//      routine
 void    *coder_routine(void *arg);
 void    take_dongle(t_coder *coder, t_dongle *dongle);
 void    take_dongles(t_coder *coder);
 
-//schedler
+//      schedler
 int     edf(t_coder *coder, t_dongle *dongle);
 int     scheduler(t_coder *coder, t_dongle *dongle);
+
+//      edf utils
+void    swap_dongles(t_dongle *dongle, int curr, int next);
+void    heap_push(t_dongle *dongle, t_coder *coder);
+void    heap_pop(t_dongle *dongle);
+long    get_deadline(t_coder *coder);
 
  #endif //CODEXION_H

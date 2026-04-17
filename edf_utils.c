@@ -1,6 +1,6 @@
 #include "codexion.h"
 
-long    get_deadline(t_cder *coder)
+long    get_deadline(t_coder *coder)
 {
     long    deadline;
 
@@ -10,11 +10,19 @@ long    get_deadline(t_cder *coder)
     return (deadline);
 }
 
+void    swap_dongles(t_dongle *dongle, int curr, int next)
+{
+    t_coder *tmp;
+    
+    tmp = dongle->queue[curr];
+    dongle->queue[curr] = dongle->queue[next];
+    dongle->queue[next] = tmp;
+}
+
 void    heap_push(t_dongle *dongle, t_coder *coder)
 {
     int     i;
     int     parent;
-    t_cder  *tmp;
 
     i = dongle->size++;
     dongle->queue[i] = coder;
@@ -23,9 +31,7 @@ void    heap_push(t_dongle *dongle, t_coder *coder)
         parent = (i - 1) / 2;
         if (get_deadline(dongle->queue[i]) < get_deadline(dongle->queue[parent]))
         {
-            tmp = dongle->queue[i];
-            dongle->queue[i] = dongle->queue[parent];
-            dongle->queue[parent] = tmp;
+            swap_dongles(dongle, i, parent);
             i = parent;
         }
         else
@@ -33,17 +39,17 @@ void    heap_push(t_dongle *dongle, t_coder *coder)
     }
 }
 
-
-void heap_pop(t_dongle *dongle)
+void    heap_pop(t_dongle *dongle)
 {
     int i;
     int smallest;
     int left;
     int right;
-    t_coder *tmp;
     
     i = 0;
-    if (dongle->size == 0) return;
+    if (dongle->size == 0)
+        return;
+    //overwrite the last elemnet and reduce size -= 1
     dongle->queue[0] = dongle->queue[--dongle->size];
     while (1)
     {
@@ -56,9 +62,7 @@ void heap_pop(t_dongle *dongle)
             smallest = right;
         if (smallest != i)
         {
-            tmp = dongle->queue[i];
-            dongle->queue[i] = dongle->queue[smallest];
-            dongle->queue[smallest] = tmp;
+            swap_dongles(dongle, i, smallest);
             i = smallest;
         }
         else break;

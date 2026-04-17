@@ -16,9 +16,9 @@ int init_dongles(t_data *data, t_dongle *dongles)
         dongles[i].last_used = 0;
         pthread_mutex_init(&dongles[i].dongle_mutex, NULL);
 
-        dongles[i].capacity = 2;
+        dongles[i].capacity = data->number_of_coders;
         dongles[i].size = 0;
-        dongles[i].queue = malloc(sizeof(t_coder*) * 2);
+        dongles[i].queue = malloc(sizeof(t_coder*) * data->number_of_coders);
         if (!dongles[i].queue)
             return (0);
     }

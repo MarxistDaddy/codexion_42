@@ -3,21 +3,24 @@
 void release_dongle(t_coder *coder, t_dongle *dongle)
 {
     int i;
-    int j;
 
     pthread_mutex_lock(&dongle->dongle_mutex);
     dongle->last_used = get_time();
-    i = 0;
-    while (i < dongle->size && dongle->queue[i] != coder)
-        i++;
-    if (i < dongle->size)
+
+    if (strcmp(coder->data->scheduler, "edf") == 0)
     {
-        j = i;
-        while (j < dongle->size - 1)
+        // Re-organize the heap so the next urgent person is at Index 0
+        heap_pop(dongle);
+    }
+    else
+    {
+        // FIFO: Shift everyone left (Index 1 becomes Index 0)
+        i = 0;
+        while (i < dongle->size - 1)
         {
-            dongle->queue[j] = dongle->queue[j + 1];
-            j++;
-        }   
+            dongle->queue[i] = dongle->queue[i + 1];
+            i++;
+        }
         dongle->size--;
     }
     pthread_mutex_unlock(&dongle->dongle_mutex);
@@ -26,9 +29,16 @@ void release_dongle(t_coder *coder, t_dongle *dongle)
 void take_dongle(t_coder *coder, t_dongle *dongle)
 {
     pthread_mutex_lock(&dongle->dongle_mutex);
-    dongle->queue[dongle->size++] = coder;
+
+    // DECIDE ARRIVAL STRATEGY
+    if (strcmp(coder->data->scheduler, "edf") == 0)
+        heap_push(dongle, coder); // Your Min-Heap logic
+    else
+        dongle->queue[dongle->size++] = coder; // Standard FIFO join
+
     while (!check_stop(coder->data))
     {
+        // Both FIFO and EDF now check if they are at Index 0
         if (scheduler(coder, dongle))
         {
             safe_print(coder->data, coder->id, "has taken a dongle");
