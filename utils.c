@@ -6,22 +6,22 @@
 /*   By: hamaarab <hamaarab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 03:36:48 by hamaarab          #+#    #+#             */
-/*   Updated: 2026/04/17 20:32:30 by hamaarab         ###   ########.fr       */
+/*   Updated: 2026/04/17 21:34:37 by hamaarab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-int error(char *error_msg)
+int     error(char *error_msg)
 {
     fprintf(stderr, "Error: %s\n", error_msg);
     return (0);
 }
 
-void safe_print(t_data *data, int id, char *msg)
+void    safe_print(t_data *data, int id, char *msg)
 {
     pthread_mutex_lock(&data->print_mutex);
-    pthread_mutex_lock(&data->stop_mutex); // Lock the stop flag
+    pthread_mutex_lock(&data->stop_mutex);
 
     if (!data->stop)
     {
@@ -32,14 +32,14 @@ void safe_print(t_data *data, int id, char *msg)
     pthread_mutex_unlock(&data->print_mutex);
 }
 
-void safe_stop(t_data *data, int value)
+void    safe_stop(t_data *data, int value)
 {
     pthread_mutex_lock(&data->stop_mutex);
     data->stop = value;
     pthread_mutex_unlock(&data->stop_mutex);
 }
 
-int check_stop(t_data *data)
+int     check_stop(t_data *data)
 {
     int stop;
     pthread_mutex_lock(&data->stop_mutex);

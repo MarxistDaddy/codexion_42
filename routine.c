@@ -6,7 +6,7 @@
 /*   By: hamaarab <hamaarab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 03:36:10 by hamaarab          #+#    #+#             */
-/*   Updated: 2026/04/17 03:36:12 by hamaarab         ###   ########.fr       */
+/*   Updated: 2026/04/17 21:16:14 by hamaarab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void take_dongle(t_coder *coder, t_dongle *dongle)
             return ;
         }
         pthread_mutex_unlock(&dongle->dongle_mutex);
+        //stop flag!
         usleep(500);
         pthread_mutex_lock(&dongle->dongle_mutex);
     }
@@ -84,7 +85,7 @@ void *coder_routine(void *arg)
     t_coder *coder;
     coder = (t_coder *)arg;
 
-    while (!check_stop(coder->data))
+    while (!check_stop(coder->data)) //how does it stop!
     {
         take_dongles(coder);
         

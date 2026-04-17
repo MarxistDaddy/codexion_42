@@ -6,7 +6,7 @@
 /*   By: hamaarab <hamaarab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 03:37:06 by hamaarab          #+#    #+#             */
-/*   Updated: 2026/04/17 20:50:48 by hamaarab         ###   ########.fr       */
+/*   Updated: 2026/04/17 20:53:27 by hamaarab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,27 +39,21 @@ typedef struct s_data
 
 	long start_time; // i will change to long
 	int stop;        // flag but shared
-
-//	int					current_turn;
 	pthread_mutex_t		sched_mutex;
-
-//	t_coder				*coders;
-
 }						t_data;
 
 typedef struct s_dongle
 {
 	int					id;
 	pthread_mutex_t		dongle_mutex;
-//	   pthread_cond_t dongle_cond;
 	long last_used; // needs to be in long! gettimeofday!
 
 	t_coder **queue; // array of pointers to coders waiting | for fifo/edf
 	int size;        // current n of coders waiting
 	int capacity;    // max number allowed which data->number_of_coders!
 
-//	   pthread_cond_t cond;
 }						t_dongle;
+
 
 typedef struct s_coder
 {
