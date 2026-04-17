@@ -3,7 +3,7 @@ NAME        = codexion
 CC          = cc
 CFLAGS      = -Wall -Wextra -Werror -pthread
 
-SRC         = main.c \
+SRC         = codexion.c \
               parsing.c \
               init.c \
               threads.c \
@@ -11,7 +11,7 @@ SRC         = main.c \
               edf_utils.c \
               scheduler.c \
               monitor.c \
-              helpers.c
+              utils.c
 
 OBJ         = $(SRC:.c=.o)
 
