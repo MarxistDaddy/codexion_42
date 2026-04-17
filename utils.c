@@ -6,11 +6,17 @@
 /*   By: hamaarab <hamaarab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 03:36:48 by hamaarab          #+#    #+#             */
-/*   Updated: 2026/04/17 03:36:49 by hamaarab         ###   ########.fr       */
+/*   Updated: 2026/04/17 20:32:30 by hamaarab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
+
+int error(char *error_msg)
+{
+    fprintf(stderr, "Error: %s\n", error_msg);
+    return (0);
+}
 
 void safe_print(t_data *data, int id, char *msg)
 {
