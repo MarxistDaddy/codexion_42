@@ -6,18 +6,19 @@
 /*   By: hamaarab <hamaarab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 03:36:03 by hamaarab          #+#    #+#             */
-/*   Updated: 2026/04/17 21:37:02 by hamaarab         ###   ########.fr       */
+/*   Updated: 2026/04/18 21:34:15 by hamaarab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "codexion.h"
 
+// 1. Change this function to return a specific state
 static int check_burnout_and_completion(t_data *data, t_coder *coders)
 {
-    int     i;
-    long    now;
-    int     all_done;
+    int i;
+    long now;
+    int all_done;
 
     all_done = 1;
     now = get_time();
@@ -26,24 +27,19 @@ static int check_burnout_and_completion(t_data *data, t_coder *coders)
     {
         pthread_mutex_lock(&data->sched_mutex);
         
-        // 1. Burnout Check (Deadline = last_compile + time_to_burnout)
+        // --- BURNOUT CASE ---
         if (now - coders[i].last_compile >= data->time_to_burnout)
         {
-            // Lock print to ensure "burned out" is the absolute last message
             pthread_mutex_lock(&data->print_mutex);
-            // Lock stop to prevent others from changing state
             pthread_mutex_lock(&data->stop_mutex);
-            
-            data->stop = 1;
+            data->stop = 1; // ONLY set stop here!
             printf("%ld %d burned out\n", now - data->start_time, coders[i].id);
-            
             pthread_mutex_unlock(&data->stop_mutex);
             pthread_mutex_unlock(&data->print_mutex);
             pthread_mutex_unlock(&data->sched_mutex);
-            return (1);
+            return (1); // Burnout detected
         }
 
-        // 2. Completion Check
         if (data->required_compiles > 0 && coders[i].compile_done < data->required_compiles)
             all_done = 0;
 
@@ -51,42 +47,41 @@ static int check_burnout_and_completion(t_data *data, t_coder *coders)
         i++;
     }
 
+    // --- SUCCESS CASE ---
     if (data->required_compiles > 0 && all_done)
     {
-        //pthread_mutex_lock(&data->stop_mutex);
-        //data->stop = 1;
-        //pthread_mutex_unlock(&data->stop_mutex);
-        safe_stop(data, 1);
-        return (1);
+        // DO NOT set data->stop = 1 here.
+        // Just return 2 to signal that work is finished normally.
+        return (2); 
     }
     return (0);
 }
 
+// 2. Update the routine to react to the return values
 void *monitor_routine(void *arg)
 {
     t_coder *coders = (t_coder *)arg;
-    t_data  *data = coders[0].data;
-    int     i;
+    t_data *data = coders[0].data;
+    int status;
 
     while (1)
     {
-        //check reset!
-        if (check_burnout_and_completion(data, coders))
+        status = check_burnout_and_completion(data, coders);
+        if (status == 1) // Burnout
         {
-            i = 0;
-            while (i < data->number_of_coders)
-            {
-                pthread_mutex_lock(&coders[i].left_dongle->dongle_mutex);
-                pthread_mutex_unlock(&coders[i].left_dongle->dongle_mutex);
-                i++;
-            }
+            break; 
+        }
+        else if (status == 2) // Success
+        {
+            // Simply exit the monitor. 
+            // The coder threads will see their compile_done count 
+            // in their next loop and exit gracefully.
             break;
         }
         usleep(250); 
     }
     return (NULL);
 }
-
 
 
 

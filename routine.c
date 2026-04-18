@@ -6,7 +6,7 @@
 /*   By: hamaarab <hamaarab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 03:36:10 by hamaarab          #+#    #+#             */
-/*   Updated: 2026/04/17 21:16:14 by hamaarab         ###   ########.fr       */
+/*   Updated: 2026/04/18 21:30:33 by hamaarab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void *coder_routine(void *arg)
     t_coder *coder;
     coder = (t_coder *)arg;
 
-    while (!check_stop(coder->data)) //how does it stop!
+    while (1) //how does it stop!
     {
         take_dongles(coder);
         
@@ -99,6 +99,9 @@ void *coder_routine(void *arg)
         release_dongle(coder, coder->left_dongle);
         release_dongle(coder, coder->right_dongle);
         
+        //if (coder->compile_done >= coder->data->required_compiles)
+         //   break;
+
         pthread_mutex_lock(&coder->data->sched_mutex);
         coder->compile_done++;
         pthread_mutex_unlock(&coder->data->sched_mutex);
@@ -108,6 +111,8 @@ void *coder_routine(void *arg)
         
         safe_print(coder->data, coder->id, "is refactoring");
         usleep(coder->data->time_to_refactor * 1000);
+        if (coder->compile_done >= coder->data->required_compiles || check_stop(coder->data))
+            break;
     }
     return NULL;
 }
