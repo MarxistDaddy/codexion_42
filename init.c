@@ -6,7 +6,7 @@
 /*   By: hamaarab <hamaarab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 03:35:44 by hamaarab          #+#    #+#             */
-/*   Updated: 2026/04/19 01:23:28 by hamaarab         ###   ########.fr       */
+/*   Updated: 2026/04/19 06:47:22 by hamaarab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,10 @@ int	init_dongles(t_data *data, t_dongle *dongles)
 	{
 		dongles[i].id = i;
 		dongles[i].last_used = 0;
-		pthread_mutex_init(&dongles[i].dongle_mutex, NULL);
-		//dongles[i].capacity = data->number_of_coders;
+		if (pthread_mutex_init(&dongles[i].dongle_mutex, NULL) != 0)
+            return (0);
 		dongles[i].capacity = 2;
 		dongles[i].size = 0;
-		//dongles[i].queue = malloc(sizeof(t_coder *) * data->number_of_coders);
 		dongles[i].queue = malloc(sizeof(t_coder *) * 2);
 		if (!dongles[i].queue)
 			return (0);
@@ -42,9 +41,12 @@ int	init_dongles(t_data *data, t_dongle *dongles)
 	return (1);
 }
 
-int	init_coders(t_data *data, t_coder *coders, t_dongle *dongles)
+void    init_coders(t_data *data, t_coder *coders, t_dongle *dongles)
 {
-	for (int i = 0; i < data->number_of_coders; i++)
+    int i;
+
+    i = 0;
+	while (i < data->number_of_coders)
 	{
 		coders[i].id = i + 1;
 		coders[i].compile_done = 0;
@@ -52,37 +54,26 @@ int	init_coders(t_data *data, t_coder *coders, t_dongle *dongles)
 		coders[i].data = data;
 		coders[i].left_dongle = &dongles[i];
 		coders[i].right_dongle = &dongles[(i + 1) % data->number_of_coders];
+        i++;
 	}
-	return (1);
 }
 
-int	init_simulation(t_data *data, t_coder **coders, t_dongle **dongles)
+int init_simulation(t_data *data, t_coder **coders, t_dongle **dongles)
 {
-	// free!
 	*coders = malloc(sizeof(t_coder) * data->number_of_coders);
 	*dongles = malloc(sizeof(t_dongle) * data->number_of_coders);
-	
     if (!*coders || !*dongles)
 		return (0);
-	
-    // stop flag + start time marker!
 	data->start_time = get_time();
 	data->stop = 0;
-	
-    // init print and stop mutex
 	pthread_mutex_init(&data->print_mutex, NULL);
 	pthread_mutex_init(&data->stop_mutex, NULL);
-	pthread_mutex_init(&data->sched_mutex, NULL); //..
-	
-    // critical for fifo
-	//data->current_turn = 1;
-    // critical for edf
-    //	data->coders = *coders;
+	pthread_mutex_init(&data->sched_mutex, NULL);
     if (!init_dongles(data, *dongles))
+    {
+        cleanup_simulation(data, *coders, *dongles);
 		return (0);
-    if (!init_coders(data, *coders, *dongles))
-		return (0);	
+    }
+    init_coders(data, *coders, *dongles);
     return (1);
 }
-
-

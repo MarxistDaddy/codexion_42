@@ -6,7 +6,7 @@
 /*   By: hamaarab <hamaarab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 03:37:06 by hamaarab          #+#    #+#             */
-/*   Updated: 2026/04/19 01:30:41 by hamaarab         ###   ########.fr       */
+/*   Updated: 2026/04/19 06:15:40 by hamaarab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ typedef struct s_coder
 
 }						t_coder;
 
+
+void	cleanup_simulation(t_data *data, t_coder *coders, t_dongle *dongles);
 //      parsing
 int						parse_args(int ac, char **av, t_data *data);
 
@@ -79,8 +81,10 @@ long					get_time(void);
 void					*coder_routine(void *arg);
 
 //      threads
-int						create_threads(t_coder *coders, t_data *data);
-int						join_threads(t_coder *coders, t_data *data);
+//int						create_threads(t_coder *coders, t_data *data);
+int    create_threads(t_data *data, t_coder *coders, t_dongle *dongles);
+//int						join_threads(t_coder *coders, t_data *data);
+int     join_threads(t_data *data, t_coder *coders, t_dongle *dongles);
 
 //      monitor
 void					*monitor_routine(void *arg);

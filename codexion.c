@@ -6,7 +6,7 @@
 /*   By: hamaarab <hamaarab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 03:35:54 by hamaarab          #+#    #+#             */
-/*   Updated: 2026/04/19 02:55:17 by hamaarab         ###   ########.fr       */
+/*   Updated: 2026/04/19 06:45:23 by hamaarab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,20 +46,16 @@ int	main(int ac, char **av)
 		return (1);
 	if (!init_simulation(&data, &coders, &dongles))
 		return (1);
-	if (!create_threads(coders, &data))
-    {
-        cleanup_simulation(&data, coders, dongles);
+	if (!create_threads(&data, coders, dongles))
 		return (1);
-    }
 	if (pthread_create(&monitor_id, NULL, monitor_routine, coders) != 0)
     {
-        cleanup_simulation(&data, coders, dongles);
+        safe_stop(&data, 1);
+        join_threads(&data, coders, dongles);
 		return (1);
     }
-	if (pthread_join(monitor_id, NULL) != 0)
+	pthread_join(monitor_id, NULL);
+	if (!join_threads(&data, coders, dongles))
 		return (1);
-	if (!join_threads(coders, &data))
-		return (1);
-	cleanup_simulation(&data, coders, dongles);
 	return (0);
 }
