@@ -6,7 +6,7 @@
 /*   By: hamaarab <hamaarab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 03:37:06 by hamaarab          #+#    #+#             */
-/*   Updated: 2026/04/19 23:06:28 by hamaarab         ###   ########.fr       */
+/*   Updated: 2026/04/19 23:15:00 by hamaarab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,8 @@ void					take_dongle(t_coder *coder, t_dongle *dongle);
 void					take_dongles(t_coder *coder);
 
 //      schedler
-int						edf(t_coder *coder, t_dongle *dongle);
 int						scheduler(t_coder *coder, t_dongle *dongle);
+long					get_deadline(t_coder *coder);
 
 //      edf utils
 void					swap_dongles(t_dongle *dongle, int curr, int next);
