@@ -32,7 +32,7 @@ typedef struct s_data
 	int					time_to_refactor;
 	int					required_compiles;
 	int					dongle_cooldown;
-	char                *scheduler;
+	char				*scheduler;
 
 	pthread_mutex_t		print_mutex;
 	pthread_mutex_t		stop_mutex;
@@ -54,7 +54,6 @@ typedef struct s_dongle
 
 }						t_dongle;
 
-
 typedef struct s_coder
 {
 	int					id;
@@ -67,8 +66,8 @@ typedef struct s_coder
 
 }						t_coder;
 
-
-void	cleanup_simulation(t_data *data, t_coder *coders, t_dongle *dongles);
+void					cleanup_simulation(t_data *data, t_coder *coders,
+							t_dongle *dongles);
 //      parsing
 int						parse_args(int ac, char **av, t_data *data);
 
@@ -81,10 +80,12 @@ long					get_time(void);
 void					*coder_routine(void *arg);
 
 //      threads
-//int						create_threads(t_coder *coders, t_data *data);
-int    create_threads(t_data *data, t_coder *coders, t_dongle *dongles);
-//int						join_threads(t_coder *coders, t_data *data);
-int     join_threads(t_data *data, t_coder *coders, t_dongle *dongles);
+// int						create_threads(t_coder *coders, t_data *data);
+int						create_threads(t_data *data, t_coder *coders,
+							t_dongle *dongles);
+// int						join_threads(t_coder *coders, t_data *data);
+int						join_threads(t_data *data, t_coder *coders,
+							t_dongle *dongles);
 
 //      monitor
 void					*monitor_routine(void *arg);
@@ -94,8 +95,8 @@ int						check_sim_stop(t_data *data, t_coder *coders);
 void					safe_print(t_data *data, int id, char *msg);
 void					safe_stop(t_data *data, int value);
 int						check_stop(t_data *data);
-int                     error(char *error_msg);
-void                    safe_increment(t_coder *coder);
+int						error(char *error_msg);
+void					safe_increment(t_coder *coder);
 
 //      routine
 void					*coder_routine(void *arg);

@@ -49,11 +49,11 @@ int	main(int ac, char **av)
 	if (!create_threads(&data, coders, dongles))
 		return (1);
 	if (pthread_create(&monitor_id, NULL, monitor_routine, coders) != 0)
-    {
-        safe_stop(&data, 1);
-        join_threads(&data, coders, dongles);
+	{
+		safe_stop(&data, 1);
+		join_threads(&data, coders, dongles);
 		return (1);
-    }
+	}
 	pthread_join(monitor_id, NULL);
 	if (!join_threads(&data, coders, dongles))
 		return (1);

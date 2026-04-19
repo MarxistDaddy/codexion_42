@@ -6,7 +6,7 @@
 /*   By: hamaarab <hamaarab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 03:36:37 by hamaarab          #+#    #+#             */
-/*   Updated: 2026/04/19 02:16:58 by hamaarab         ###   ########.fr       */
+/*   Updated: 2026/04/19 07:04:14 by hamaarab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,18 @@ int	ft_is_number(char *str)
 	return (1);
 }
 
-//norm
 char	*error_table(int i)
 {
-	char	*table[] = {"invalid number_of_coders", "invalid time_to_burnout",
-			"invalid time_to_compile", "invalid time_to_debug",
-			"invalid time_to_refactor", "invalid number_of_compiles_required",
-			"invalid dongle_cooldown", "invalid scheduler"};
+	char	*table[8];
 
+	table[0] = "invalid number_of_coders";
+	table[1] = "invalid time_to_burnout";
+	table[2] = "invalid time_to_compile";
+	table[3] = "invalid time_to_debug";
+	table[4] = "invalid time_to_refactor";
+	table[5] = "invalid number_of_compiles_required";
+	table[6] = "invalid dongle_cooldown";
+	table[7] = "invalid scheduler";
 	return (table[i]);
 }
 

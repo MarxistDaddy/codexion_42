@@ -12,16 +12,16 @@
 
 #include "codexion.h"
 
-int scheduler(t_coder *coder, t_dongle *dongle)
+int	scheduler(t_coder *coder, t_dongle *dongle)
 {
-    long now;
+	long	now;
 
-    if (dongle->size == 0)
-        return (0);
-    if (dongle->queue[0] != coder)
-        return (0);
-    now = get_time();
-    if (now - dongle->last_used < coder->data->dongle_cooldown)
-        return (0);
-    return (1);
+	if (dongle->size == 0)
+		return (0);
+	if (dongle->queue[0] != coder)
+		return (0);
+	now = get_time();
+	if (now - dongle->last_used < coder->data->dongle_cooldown)
+		return (0);
+	return (1);
 }
