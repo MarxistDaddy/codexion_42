@@ -6,7 +6,7 @@
 /*   By: hamaarab <hamaarab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 03:36:37 by hamaarab          #+#    #+#             */
-/*   Updated: 2026/04/17 20:35:38 by hamaarab         ###   ########.fr       */
+/*   Updated: 2026/04/19 02:16:58 by hamaarab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	init_all(char **av, t_data *data)
 	data->time_to_refactor = atoi(av[5]);
 	data->required_compiles = atoi(av[6]);
 	data->dongle_cooldown = atoi(av[7]);
-	if (data->number_of_coders <= 1)
+	if (data->number_of_coders <= 0)
 		return (error(error_table(0)));
 	if (data->time_to_burnout <= 0)
 		return (error(error_table(1)));

@@ -6,7 +6,7 @@
 /*   By: hamaarab <hamaarab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 03:35:54 by hamaarab          #+#    #+#             */
-/*   Updated: 2026/04/18 21:13:25 by hamaarab         ###   ########.fr       */
+/*   Updated: 2026/04/19 02:09:01 by hamaarab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int main(int ac, char **av)
     t_dongle    *dongles;
     pthread_t   monitor_id;
 
+    
     if(!parse_args(ac, av, &data)) 
         return (1);
     if(!init_simulation(&data, &coders, &dongles))
