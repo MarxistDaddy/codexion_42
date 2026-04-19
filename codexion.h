@@ -6,7 +6,7 @@
 /*   By: hamaarab <hamaarab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 03:37:06 by hamaarab          #+#    #+#             */
-/*   Updated: 2026/04/19 06:15:40 by hamaarab         ###   ########.fr       */
+/*   Updated: 2026/04/19 23:06:28 by hamaarab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,10 @@ typedef struct s_data
 	int					required_compiles;
 	int					dongle_cooldown;
 	char				*scheduler;
-
 	pthread_mutex_t		print_mutex;
 	pthread_mutex_t		stop_mutex;
-
-	long start_time; // i will change to long
-	int stop;        // flag but shared
+	long				start_time;
+	int					stop;
 	pthread_mutex_t		sched_mutex;
 }						t_data;
 
@@ -46,12 +44,10 @@ typedef struct s_dongle
 {
 	int					id;
 	pthread_mutex_t		dongle_mutex;
-	long last_used; // needs to be in long! gettimeofday!
-
-	t_coder **queue; // array of pointers to coders waiting | for fifo/edf
-	int size;        // current n of coders waiting
-	int capacity;    // max number allowed which data->number_of_coders!
-
+	long				last_used;
+	t_coder				**queue;
+	int					size;
+	int					capacity;
 }						t_dongle;
 
 typedef struct s_coder
@@ -63,7 +59,6 @@ typedef struct s_coder
 	t_dongle			*left_dongle;
 	t_dongle			*right_dongle;
 	t_data				*data;
-
 }						t_coder;
 
 void					cleanup_simulation(t_data *data, t_coder *coders,
@@ -80,10 +75,8 @@ long					get_time(void);
 void					*coder_routine(void *arg);
 
 //      threads
-// int						create_threads(t_coder *coders, t_data *data);
 int						create_threads(t_data *data, t_coder *coders,
 							t_dongle *dongles);
-// int						join_threads(t_coder *coders, t_data *data);
 int						join_threads(t_data *data, t_coder *coders,
 							t_dongle *dongles);
 
