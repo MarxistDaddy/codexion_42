@@ -6,7 +6,7 @@
 /*   By: hamaarab <hamaarab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 03:37:06 by hamaarab          #+#    #+#             */
-/*   Updated: 2026/04/17 20:53:27 by hamaarab         ###   ########.fr       */
+/*   Updated: 2026/04/19 01:30:41 by hamaarab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void					safe_print(t_data *data, int id, char *msg);
 void					safe_stop(t_data *data, int value);
 int						check_stop(t_data *data);
 int                     error(char *error_msg);
+void                    safe_increment(t_coder *coder);
 
 //      routine
 void					*coder_routine(void *arg);

@@ -6,7 +6,7 @@
 /*   By: hamaarab <hamaarab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 03:36:03 by hamaarab          #+#    #+#             */
-/*   Updated: 2026/04/18 21:34:15 by hamaarab         ###   ########.fr       */
+/*   Updated: 2026/04/19 01:39:38 by hamaarab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,17 +47,11 @@ static int check_burnout_and_completion(t_data *data, t_coder *coders)
         i++;
     }
 
-    // --- SUCCESS CASE ---
     if (data->required_compiles > 0 && all_done)
-    {
-        // DO NOT set data->stop = 1 here.
-        // Just return 2 to signal that work is finished normally.
         return (2); 
-    }
     return (0);
 }
 
-// 2. Update the routine to react to the return values
 void *monitor_routine(void *arg)
 {
     t_coder *coders = (t_coder *)arg;
@@ -67,18 +61,11 @@ void *monitor_routine(void *arg)
     while (1)
     {
         status = check_burnout_and_completion(data, coders);
-        if (status == 1) // Burnout
-        {
+        if (status == 1)
             break; 
-        }
-        else if (status == 2) // Success
-        {
-            // Simply exit the monitor. 
-            // The coder threads will see their compile_done count 
-            // in their next loop and exit gracefully.
+        else if (status == 2)
             break;
-        }
-        usleep(250); 
+        usleep(50); 
     }
     return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: hamaarab <hamaarab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 03:35:44 by hamaarab          #+#    #+#             */
-/*   Updated: 2026/04/17 20:42:08 by hamaarab         ###   ########.fr       */
+/*   Updated: 2026/04/19 01:23:28 by hamaarab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,11 @@ int	init_dongles(t_data *data, t_dongle *dongles)
 		dongles[i].id = i;
 		dongles[i].last_used = 0;
 		pthread_mutex_init(&dongles[i].dongle_mutex, NULL);
-		dongles[i].capacity = data->number_of_coders;
+		//dongles[i].capacity = data->number_of_coders;
+		dongles[i].capacity = 2;
 		dongles[i].size = 0;
-		dongles[i].queue = malloc(sizeof(t_coder *) * data->number_of_coders);
+		//dongles[i].queue = malloc(sizeof(t_coder *) * data->number_of_coders);
+		dongles[i].queue = malloc(sizeof(t_coder *) * 2);
 		if (!dongles[i].queue)
 			return (0);
         i++;

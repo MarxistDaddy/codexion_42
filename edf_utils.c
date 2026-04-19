@@ -6,7 +6,7 @@
 /*   By: hamaarab <hamaarab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 03:36:30 by hamaarab          #+#    #+#             */
-/*   Updated: 2026/04/17 03:36:32 by hamaarab         ###   ########.fr       */
+/*   Updated: 2026/04/19 01:37:05 by hamaarab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void    heap_pop(t_dongle *dongle)
     i = 0;
     if (dongle->size == 0)
         return;
-    //overwrite the last elemnet and reduce size -= 1
     dongle->queue[0] = dongle->queue[--dongle->size];
     while (1)
     {
